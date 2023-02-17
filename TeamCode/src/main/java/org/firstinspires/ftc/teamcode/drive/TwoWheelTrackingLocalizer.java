@@ -1,4 +1,3 @@
-
 package org.firstinspires.ftc.teamcode.drive;
 
 import androidx.annotation.NonNull;
@@ -38,22 +37,23 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     public static double WHEEL_RADIUS = 0.5; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double PARALLEL_X = 0; // X is the up and down direction //TODO update
-    public static double PARALLEL_Y = 0; // Y is the strafe direction //TODO update
+    public static double PARALLEL_X = 2.086; // X is the up and down direction //TODO update
+    public static double PARALLEL_Y = 3.2; // Y is the strafe direction //TODO update
 
-    public static double PERPENDICULAR_X = 0; //TODO update
-    public static double PERPENDICULAR_Y = 0; //TODO update
+    public static double PERPENDICULAR_X = -3.85; //TODO update
+    public static double PERPENDICULAR_Y = -0.07; //TODO update
 
-    public static double X_MULTIPLIER = 1; // Multiplier in the X direction //TODO update
-    public static double Y_MULTIPLIER = 1; // Multiplier in the Y direction //TODO update
+    public static double X_MULTIPLIER = 0.9704705; // Multiplier in the X direction //TODO update
+    public static double Y_MULTIPLIER = 0.97798577; // Multiplier in the Y direction //TODO update
 
 
     // Parallel/Perpendicular to the forward axis
     // Parallel wheel is parallel to the forward axis
     // Perpendicular is perpendicular to the forward axis
-    private Encoder parallelEncoder, perpendicularEncoder;
+    private final Encoder parallelEncoder;
+    private final Encoder perpendicularEncoder;
 
-    private SampleMecanumDrive drive;
+    private final SampleMecanumDrive drive;
 
     public TwoWheelTrackingLocalizer(HardwareMap hardwareMap, SampleMecanumDrive drive) {
         super(Arrays.asList(
@@ -87,17 +87,14 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     @Override
     public List<Double> getWheelPositions() {
         return Arrays.asList(
-                encoderTicksToInches(parallelEncoder.getCurrentPosition()) * X_M,
-                encoderTicksToInches(perpendicularEncoder.getCurrentPosition())
+                encoderTicksToInches(parallelEncoder.getCurrentPosition()) * X_MULTIPLIER,
+                encoderTicksToInches(perpendicularEncoder.getCurrentPosition()) * Y_MULTIPLIER
         );
     }
 
     @NonNull
     @Override
     public List<Double> getWheelVelocities() {
-        // TODO: If your encoder velocity can exceed 32767 counts / second (such as the REV Through Bore and other
-        //  competing magnetic encoders), change Encoder.getRawVelocity() to Encoder.getCorrectedVelocity() to enable a
-        //  compensation method
 
         return Arrays.asList(
                 encoderTicksToInches(parallelEncoder.getCorrectedVelocity()),
